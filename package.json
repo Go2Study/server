@@ -1,15 +1,16 @@
 {
-  "name": "",
+  "name": "g2s-server",
   "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "keywords": [
-    "swagger"
+    "go2study"
   ],
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "connect": "^3.2.0",
-    "swagger-tools": "0.8.*"
+    "express": "~4.0.0",
+    "mongoose": "~3.6.13",
+    "body-parser": "~1.0.1"
   }
 }
