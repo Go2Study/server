@@ -1,5 +1,10 @@
 var express = require('express')
-    , router = express.Router()
-    , User = require('../models/comment');
+    , router = express.Router();
 
-router.use('/users', require('./User'));
+router.use('/', require('./user'));
+
+router.get('/', function(req, res) {
+    res.send('Home page')
+});
+
+module.exports = router;
