@@ -34,9 +34,9 @@ exports.usersPcnrequiredGroupsIdGet = function(pcnrequired, id, query) {
 exports.usersPcnGet = function(pcn, user) {
     User.find(function(err, users) {
         if (err)
-            res.send(err);
+            return err;
 
-        res.json(users);
+        return users;
     });
 };
 exports.usersPcnPut = function(pcn, photo) {	
@@ -45,14 +45,14 @@ exports.usersPcnPut = function(pcn, photo) {
 };
 exports.usersPcnPost = function(pcn, firstName, lastName, email, photo) {
     var user = new User();      // create a new instance of the Bear model
-    user.name = req.body.name;  // set the bears name (comes from the request)
+    user.name = firstName;  // set the bears name (comes from the request)
 
     // save the bear and check for errors
     user.save(function(err) {
         if (err)
-            res.send(err);
+            return err;
 
-        res.json({ message: 'User created!' });
+        return { message: 'User created!' };
     });
 	
 };

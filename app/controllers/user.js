@@ -132,7 +132,6 @@ router.route(path)
 .get(function (req, res) {
   
   result = User.usersPcnGet(req.param('pcn'), req.param('user'));
-
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
@@ -162,7 +161,6 @@ router.route(path)
 .post(function (req, res) {
   
   result = User.usersPcnPost(req.param('pcn'), req.param('firstName'), req.param('lastName'), req.param('email'), req.param('photo'));
-
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
