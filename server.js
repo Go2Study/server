@@ -12,13 +12,27 @@
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
+var uriUtil = require('mongodb-uri');
+
 
 //MongoDB connection
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://<admin>:<G2smongoadminpass#>@ds047524.mongolab.com:47524/go2study');
+var rawURI = 'mongodb://g2sadmin:G2SMONGOADMIN77@ds047524.mongolab.com:47524/go2study';
+var mongoURI = uriUtil.formatMongoose(rawURI);
+mongoose.connect(mongoURI);
 
-//Models
-var user = require('./app/models/User');
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+db.once('open', function (callback) {
+    // yay!
+    //Models
+
+});
+var User = require('./app/models/User');
+
+
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -32,11 +46,11 @@ var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/user', function(req, res) {
-    res.json();
+router.get('/', function(req, res) {
+    res.json({ message: 'hooray! welcome to our api!' });
 });
 
-router.route('/users')
+router.route('/user')
 
     // create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res) {
@@ -49,8 +63,11 @@ router.route('/users')
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Bear created!' });
-        })
+            res.json({ message: 'User created!' });
+        });
+
+    })
+    // get all the bears (accessed at GET http://localhost:8080/api/bears)
     .get(function(req, res) {
         User.find(function(err, users) {
             if (err)
@@ -61,14 +78,11 @@ router.route('/users')
     });
 
 
-        });
-
-
 // more routes for our API will happen here
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/api/1.0', router);
+app.use('/api/', router);
 
 // START THE SERVER
 // =============================================================================
