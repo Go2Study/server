@@ -1,84 +1,68 @@
 var express = require('express')
-    , router = express.Router();
+    , router = express.Router()
+    , Group = require('../models/Group');
 
 
-var Group = require('./GroupService');
 var path;
 
 
 //Fix string format for the path parameters (if any)
 path = '/groups'.replace('{',':').replace('}','');
 router.route(path)
-.get(function (req, res) {
-  
-  result = Group.groupsGet(req.param('query'));
+    .get(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var query = req.param('query');
+        
+
+  
+    });
 
 //Fix string format for the path parameters (if any)
 path = '/groups'.replace('{',':').replace('}','');
 router.route(path)
-.post(function (req, res) {
-  
-  result = Group.groupsPost(req.param('name'), req.param('pcnlist'), req.param('description'));
+    .post(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var name = req.param('name');
+        var pcnlist = req.param('pcnlist');
+        var description = req.param('description');
+        
+
+  
+    });
 
 //Fix string format for the path parameters (if any)
 path = '/groups/{groupid}'.replace('{',':').replace('}','');
 router.route(path)
-.put(function (req, res) {
-  
-  result = Group.groupsGroupidPut(req.param('groupid'), req.param('name'), req.param('description'));
+    .put(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var groupid = req.param('groupid');
+        var name = req.param('name');
+        var description = req.param('description');
+        
+
+  
+    });
 
 //Fix string format for the path parameters (if any)
 path = '/groups/{groupid}'.replace('{',':').replace('}','');
 router.route(path)
-.delete(function (req, res) {
-  
-  result = Group.groupsGroupidDelete(req.param('groupid'));
+    .delete(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var groupid = req.param('groupid');
+        
+
+  
+    });
 
 //Fix string format for the path parameters (if any)
 path = '/groups/{id}/events'.replace('{',':').replace('}','');
 router.route(path)
-.get(function (req, res) {
-  
-  result = Group.groupsIdEventsGet(req.param('id'));
+    .get(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var id = req.param('id');
+        
+
+  
+    });
 
 module.exports = router;

@@ -6,7 +6,10 @@ var UserSchema   = new Schema({
     pcn: Number,
     im_status: String,
     gps_location: {x: Number, y: Number},
-    photo: Buffer
+    photo: Buffer,
+    ipaddress: String,
+    privateLocation: Boolean,
+    privateAgenda: Boolean
 });
 
 

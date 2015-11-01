@@ -1,69 +1,63 @@
 var express = require('express')
-    , router = express.Router();
+    , router = express.Router()
+    , Event = require('../models/Event');
 
 
-var Event = require('./EventService');
 var path;
 
 
 //Fix string format for the path parameters (if any)
 path = '/events'.replace('{',':').replace('}','');
 router.route(path)
-.post(function (req, res) {
-  
-  result = Event.eventsPost(req.param('name'), req.param('startime'), req.param('location'), req.param('startimeopt'), req.param('description'));
+    .post(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var name = req.param('name');
+        var startime = req.param('startime');
+        var location = req.param('location');
+        var startimeopt = req.param('startimeopt');
+        var description = req.param('description');
+        
+
+  
+    });
 
 //Fix string format for the path parameters (if any)
 path = '/events/{id}'.replace('{',':').replace('}','');
 router.route(path)
-.get(function (req, res) {
-  
-  result = Event.eventsIdGet(req.param('id'), req.param('query'));
+    .get(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var id = req.param('id');
+        var query = req.param('query');
+        
+
+  
+    });
 
 //Fix string format for the path parameters (if any)
 path = '/events/{id}'.replace('{',':').replace('}','');
 router.route(path)
-.put(function (req, res) {
-  
-  result = Event.eventsIdPut(req.param('id'), req.param('nameopt'), req.param('startimeopt'), req.param('durationopt'), req.param('description'), req.param('locationopt'));
+    .put(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var id = req.param('id');
+        var nameopt = req.param('nameopt');
+        var startimeopt = req.param('startimeopt');
+        var durationopt = req.param('durationopt');
+        var description = req.param('description');
+        var locationopt = req.param('locationopt');
+        
+
+  
+    });
 
 //Fix string format for the path parameters (if any)
 path = '/events/{id}'.replace('{',':').replace('}','');
 router.route(path)
-.delete(function (req, res) {
-  
-  result = Event.eventsIdDelete(req.param('id'));
+    .delete(function (req, res) {
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-});
+        var id = req.param('id');
+        
+
+  
+    });
 
 module.exports = router;
