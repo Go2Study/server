@@ -1,4 +1,4 @@
-UserEvents = require('../models/UserEvents');
+UserEvents = require('../models/User');
 
 
 module.exports = {

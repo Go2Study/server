@@ -1,4 +1,4 @@
-GroupEvents = require('../models/GroupEvents');
+GroupEvents = require('../models/Group');
 
 
 module.exports = {

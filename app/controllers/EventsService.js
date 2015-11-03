@@ -1,4 +1,4 @@
-Events = require('../models/Events');
+Events = require('../models/Event');
 
 
 module.exports = {

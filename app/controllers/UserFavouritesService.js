@@ -1,4 +1,4 @@
-UserFavourites = require('../models/UserFavourites');
+UserFavourites = require('../models/User');
 
 
 module.exports = {

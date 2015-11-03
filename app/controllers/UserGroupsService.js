@@ -1,4 +1,4 @@
-UserGroups = require('../models/UserGroups');
+UserGroups = require('../models/User');
 
 
 module.exports = {
