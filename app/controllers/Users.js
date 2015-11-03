@@ -10,7 +10,6 @@ path = '/users'.replace('{',':').replace('}','');
 router.route(path)
     .get(function (req, res) {
         var user = req.param('user').value;
-        
 
         Users.index(user, function(err, result){
             if (err) {

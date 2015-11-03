@@ -4,11 +4,15 @@ Users = require('../models/Users');
 module.exports = {
 
 	index: function(user, callback) {
-		//if error
-		callback(err, null);
 
-		//if valid
-		callback(null, result);
+        UserModel.find().lean().exec(function (err, users) {
+            if (err){
+                callback(err, null);
+                return;
+            }
+
+            callback(null, JSON.stringify(users));
+        });
 	},
 
     show: function(user, callback) {
