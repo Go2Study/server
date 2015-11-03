@@ -5,8 +5,9 @@ module.exports = {
 
 	index: function(user, callback) {
 
-        UserModel.find().lean().exec(function (err, users) {
+        UserModel.find({}, function (err, users) {
             if (err){
+                console.log(err);
                 callback(err, null);
                 return;
             }
