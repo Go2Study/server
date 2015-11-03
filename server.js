@@ -1,10 +1,5 @@
 //SETUP
 
-
-
-
-// server.js
-
 // BASE SETUP
 // =============================================================================
 
@@ -14,25 +9,17 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var uriUtil = require('mongodb-uri');
 
-
 //MongoDB connection
 var mongoose   = require('mongoose');
 var rawURI = 'mongodb://g2sadmin:G2SMONGOADMIN77@ds047524.mongolab.com:47524/go2study';
 var mongoURI = uriUtil.formatMongoose(rawURI);
 mongoose.connect(mongoURI);
-
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
-
 db.once('open', function (callback) {
-    // yay!
-    //Models
-
+   //We have connected
 });
-var User = require('./app/models/User');
-
-
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST

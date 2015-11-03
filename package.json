@@ -9,9 +9,10 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "express": "~4.0.0",
-    "mongoose": "~4.2.3",
     "body-parser": "~1.0.1",
-    "mongodb-uri": "*"
+    "express": "~4.0.0",
+    "mongodb-uri": "*",
+    "mongoose": "~4.2.3",
+    "mongoose-migration": "^0.1.0"
   }
 }
