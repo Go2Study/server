@@ -14,7 +14,7 @@ router.route(path)
 
         GroupEvents.index(id, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });

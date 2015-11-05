@@ -14,7 +14,7 @@ router.route(path)
 
         Events.index(query, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -35,7 +35,7 @@ router.route(path)
 
         Events.create(name, startime, location, startimeopt, description, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -57,7 +57,7 @@ router.route(path)
 
         Events.update(id, nameopt, startimeopt, durationopt, description, locationopt, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -74,7 +74,7 @@ router.route(path)
 
         Events.delete(id, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });

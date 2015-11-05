@@ -14,7 +14,7 @@ router.route(path)
 
         Groups.index(query, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -33,7 +33,7 @@ router.route(path)
 
         Groups.create(name, pcnlist, description, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -52,7 +52,7 @@ router.route(path)
 
         Groups.update(groupid, name, description, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -69,7 +69,7 @@ router.route(path)
 
         Groups.delete(groupid, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });

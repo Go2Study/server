@@ -9,11 +9,11 @@ var Users = require('./UsersService');
 path = '/users'.replace('{',':').replace('}','');
 router.route(path)
     .get(function (req, res) {
-        var user = req.param('user').value;
+        var user = (typeof req.param('user') === 'undefined') ? '0' : req.param('user').value;
 
         Users.index(user, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -23,23 +23,24 @@ router.route(path)
 path = '/users'.replace('{',':').replace('}','');
 router.route(path)
     .post(function (req, res) {
-        var firstName = req.param('firstName').value;
-        var lastName = req.param('lastName').value;
-        var pcn = req.param('pcn').value;
-        var email = req.param('email').value;
-        var photo = req.param('photo').value;
-        var ipaddress = req.param('ipaddress').value;
-        
+        var firstName = req.param('firstname');
+        var lastName = req.param('lastname');
+        var pcn = req.param('pcn');
+        var email = req.param('email');
+        var photo = req.param('photo');
+        var ipaddress = req.param('ipaddress');
+
 
         Users.create(firstName, lastName, pcn, email, photo, ipaddress, function(err, result){
             if (err) {
-                next(err);
+                console.log(err);
+                res.send({error: err});
             }
-            res.send(result);
+
+            res.json(result);
         });
 
-        res.send({'error': { 'code' : '401', 'message' : 'Bad request.' }});   
-        
+
     });
 
 path = '/users/{pcn}'.replace('{',':').replace('}','');
@@ -51,7 +52,7 @@ router.route(path)
 
         Users.update(pcn, photo, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });

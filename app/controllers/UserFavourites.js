@@ -14,7 +14,7 @@ router.route(path)
 
         UserFavourites.index(pcn, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -32,7 +32,7 @@ router.route(path)
 
         UserFavourites.create(pcn, pcnfavourite, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });
@@ -50,7 +50,7 @@ router.route(path)
 
         UserFavourites.usersPcnFavouritesDelete(pcn, pcnfavourite, function(err, result){
             if (err) {
-                next(err);
+                res.send({error: err});
             }
             res.send(result);
         });

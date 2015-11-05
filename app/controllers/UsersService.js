@@ -25,11 +25,26 @@ module.exports = {
     },
 
 	create: function(firstName, lastName, pcn, email, photo, ipaddress, callback) {
-		//if error
-		callback(err, null);
+        var newUser = new UserModel();
+        newUser.firstName = firstName;
+        newUser.lastName = lastName;
+        newUser.pcn = pcn;
+        newUser.email = email;
+        newUser.photo = photo;
+        newUser.ipaddress = ipaddress;
 
-		//if valid
-		callback(null, result);
+        newUser.save(validateBeforeSave=true, function(err){
+            if (err){
+                //if error
+                callback(err, null);
+                return err;
+            }
+            //if valid
+            callback(null, {success: 'Added '+firstName+' '+lastName+' with pcn '+pcn});
+        });
+
+
+
 	}, 
 
 	update: function(pcn, photo, callback) {
