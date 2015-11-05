@@ -1,16 +1,21 @@
-UserGroups = require('../models/User');
+GroupModel = require('../models/Group');
 
 
 module.exports = {
 
 	index: function(pcn, id, query, callback) {
-		//if error
-		callback(err, null);
 
-		//if valid
-		callback(null, result);
+		UserGroups.find({}, function (err, users) {
+			if (err){
+				console.log(err);
+				callback(err, null);
+				return;
+			}
+
+			callback(null, JSON.stringify(users));
+		});
 	}
 
-}
+};
 
 

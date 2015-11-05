@@ -23,8 +23,9 @@ db.once('open', function (callback) {
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json());
+app.use(bodyParser());
 
 var port = process.env.PORT || 8080;        // set our port
 

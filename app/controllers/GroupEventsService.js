@@ -1,4 +1,4 @@
-GroupEvents = require('../models/Group');
+GroupModel = require('../models/Group');
 
 
 module.exports = {
@@ -11,6 +11,6 @@ module.exports = {
 		callback(null, result);
 	}
 
-}
+};
 
 
