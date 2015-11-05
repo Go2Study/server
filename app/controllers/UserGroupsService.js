@@ -3,16 +3,16 @@ GroupModel = require('../models/Group');
 
 module.exports = {
 
-	index: function(pcn, id, query, callback) {
+	index: function(pcn, query, callback) {
+		console.log(pcn);
 
-		UserGroups.find({}, function (err, users) {
+		GroupModel.find({pcnlist: pcn}, function (err, groups) {
 			if (err){
-				console.log(err);
 				callback(err, null);
 				return;
 			}
 
-			callback(null, JSON.stringify(users));
+			callback(null, JSON.stringify(groups));
 		});
 	}
 

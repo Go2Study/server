@@ -5,9 +5,8 @@ module.exports = {
 
 	index: function(user, callback) {
 
-        UserModel.find({}, function (err, users) {
+        UserModel.find({}, '-_id firstName lastName displayName pcn email photo ipaddress', function (err, users) {
             if (err){
-                console.log(err);
                 callback(err, null);
                 return;
             }
@@ -28,18 +27,21 @@ module.exports = {
         var newUser = new UserModel();
         newUser.firstName = firstName;
         newUser.lastName = lastName;
+        newUser.displayName = firstName + ' ' + lastName;    //default display name, can be changed by the user later
         newUser.pcn = pcn;
         newUser.email = email;
         newUser.photo = photo;
-        newUser.ipaddress = ipaddress;
+        newUser.ipaddress = ipaddress; // The current ip address of the client
+        newUser.privateAgenda = false; // Agenda is publicly available by default
+        newUser.privateLocation = false; // Location is publicly known by default
 
-        newUser.save(validateBeforeSave=true, function(err){
+
+        newUser.save(validateBeforeSave = true, function(err){
             if (err){
-                //if error
                 callback(err, null);
                 return err;
             }
-            //if valid
+
             callback(null, {success: 'Added '+firstName+' '+lastName+' with pcn '+pcn});
         });
 

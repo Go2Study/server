@@ -1,14 +1,17 @@
-Groups = require('../models/Group');
+GroupModel = require('../models/Group');
 
 
 module.exports = {
 
 	index: function(query, callback) {
-		//if error
-		callback(err, null);
+        GroupModel.find({}, '-_id id name description pcnlist', function (err, users) {
+            if (err){
+                callback(err, null);
+                return;
+            }
 
-		//if valid
-		callback(null, result);
+            callback(null, JSON.stringify(users));
+        });
 	},
 
 	show: function(query, callback) {
@@ -20,11 +23,20 @@ module.exports = {
 	},
 
 	create: function(name, pcnlist, description, callback) {
-		//if error
-		callback(err, null);
+		var group = new GroupModel();
+        group.name = name;
+        group.pcnlist = pcnlist.split(',');
+        group.description = description;
+        group.id = Math.floor(Math.random()*20);
 
-		//if valid
-		callback(null, result);
+        group.save(validateBeforeSave = true, function(err){
+            if (err){
+                callback(err, null);
+                return err;
+            }
+
+            callback(null, {success: 'Created a new group : ' + name});
+        });
 	}, 
 
 	update: function(groupid, name, description, callback) {
@@ -36,11 +48,12 @@ module.exports = {
 	}, 
 
 	delete: function(groupid, callback) {
-		//if error
-		callback(err, null);
 
-		//if valid
-		callback(null, result);
+        GroupModel.findOneAndRemove({id : groupid}, function (err, group){
+            if (err)
+                callback(err, null);
+            callback(null, {success: 'Succesfully deleted group '});
+        });
 	}
 
 };
