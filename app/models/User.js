@@ -6,9 +6,9 @@ var UserSchema   = new Schema({
     lastName: String,
     displayName: String,
     pcn: {type: Number, index: { unique: true } },
-    gps_location: {x: Number, y: Number},
+    gpsLocation: {x: Number, y: Number},
     photo: Buffer,
-    ipaddress: String,
+    ipAddress: String,
     privateLocation: Boolean,
     privateAgenda: Boolean
 });
