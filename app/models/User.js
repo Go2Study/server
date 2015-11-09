@@ -5,12 +5,14 @@ var UserSchema   = new Schema({
     firstName: String,
     lastName: String,
     displayName: String,
-    pcn: {type: Number, index: { unique: true } },
+    pcn: {type: String, index: { unique: true } },
     gpsLocation: {x: Number, y: Number},
     photo: Buffer,
     ipAddress: String,
     privateLocation: Boolean,
-    privateAgenda: Boolean
+    privateAgenda: Boolean,
+    department: String,
+    title: String,
 });
 
 
