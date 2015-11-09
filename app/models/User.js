@@ -13,6 +13,7 @@ var UserSchema   = new Schema({
     privateAgenda: Boolean,
     department: String,
     title: String,
+    mail: String
 });
 
 
