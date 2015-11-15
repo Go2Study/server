@@ -15,12 +15,15 @@ module.exports = {
         });
 	},
 
-    show: function(user, callback) {
-        //if error
-        callback(err, null);
+    show: function(pcn, callback) {
+        UserModel.find({pcn: pcn}, '-_id firstName lastName displayName pcn email photo ipaddress', function (err, user) {
+            if (err){
+                callback(err, null);
+                return;
+            }
 
-        //if valid
-        callback(null, result);
+            callback(null, JSON.stringify(user));
+        });
     },
 
 	create: function(firstName, lastName, pcn, email, photo, ipaddress, callback) {
@@ -42,19 +45,33 @@ module.exports = {
                 return err;
             }
 
-            callback(null, {success: 'Added '+firstName+' '+lastName+' with pcn '+pcn});
         });
 
+        UserModel.findOne({pcn: pcn}).lean().exec(function(err, user) {
+            if (err){
+                callback(err, null);
+            }
+            
+            callback(null, user);
+        });
 
-
-	}, 
+	},
 
 	update: function(pcn, photo, callback) {
-		//if error
-		callback(err, null);
 
-		//if valid
-		callback(null, result);
+        var conditions = { pcn: pcn }
+            , update = { photo: photo }
+            , options = { multi: true };
+
+        UserModel.update(conditions, update, options, function(err, numAffected){
+            if (err){
+                callback(err, null);
+            }
+            if (numAffected>0) {
+                callback(null, '{success: '+numAffected+' users changed');
+            }
+            callback(null, res);
+        });
 	}
 
 }

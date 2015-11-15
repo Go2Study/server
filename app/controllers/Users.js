@@ -13,7 +13,7 @@ router.route(path)
 
         Users.index(user, function(err, result){
             if (err) {
-                res.send({error: err});
+                res.json({error: err});
             }
             res.send(result);
         });
@@ -23,21 +23,21 @@ router.route(path)
 path = '/users'.replace('{',':').replace('}','');
 router.route(path)
     .post(function (req, res) {
-        var firstName = req.param('firstName');
-        var lastName = req.param('lastName');
+        var firstName = req.param('firstname');
+        var lastName = req.param('lastname');
         var pcn = req.param('pcn');
         var email = req.param('email');
         var photo = req.param('photo');
         var ipaddress = req.param('ipaddress');
 
 
-        Users.create(firstName, lastName, pcn, email, photo, ipaddress, function(err, result){
+        Users.create(firstName, lastName, pcn, email, photo, ipaddress, function(err, user){
             if (err) {
                 console.log(err);
-                res.send({error: err});
+                res.json({error: err});
             }
 
-            res.json(result);
+            res.send(JSON.stringify(user));
         });
 
 
@@ -47,18 +47,29 @@ path = '/users/{pcn}'.replace('{',':').replace('}','');
 router.route(path)
     .put(function (req, res) {
         var pcn = req.param('pcn').value;
-        var photo = req.param('photo').value;
+        //var photo = req.param('photo').value;
         
 
         Users.update(pcn, photo, function(err, result){
             if (err) {
-                res.send({error: err});
+                res.json({error: err});
+            }
+            res.json(result);
+        });
+
+        res.json({'error': { 'code' : '401', 'message' : 'Bad request.' }});
+        
+    })
+    .get(function (req, res) {
+        var pcn = req.param('pcn').value;
+
+        Users.show(pcn, function(err, result){
+            if (err) {
+                res.json({error: err});
             }
             res.send(result);
         });
 
-        res.send({'error': { 'code' : '401', 'message' : 'Bad request.' }});   
-        
     });
 
 module.exports = router;
