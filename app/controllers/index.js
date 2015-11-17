@@ -8,6 +8,8 @@ router.use('/', require('./UserFavourites'));
 router.use('/', require('./Groups'));
 router.use('/', require('./GroupEvents'));
 router.use('/', require('./Events'));
+router.use('/', require('./EventsSchedule'));
+
 
 router.get('/', function(req, res) {
     res.send('Home page');
