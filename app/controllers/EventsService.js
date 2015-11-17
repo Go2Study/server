@@ -1,5 +1,5 @@
 EventModel = require('../models/Event');
-
+UserModel = require('../models/User');
 
 module.exports = {
 
@@ -19,12 +19,19 @@ module.exports = {
 		callback(null, result);
 	},
 
-	create: function(name, startime, location, startimeopt, description, callback) {
-		//if error
-		callback(err, null);
+	create: function(name, startime, endtime, location, description, pcnlist, callback) {
+		//TODO Create EventModel with the static information. Limit description to 140 characters
+		var event = new EventModel();
+		var user = new UserModel();
 
-		//if valid
-		callback(null, result);
+		event.name = name;
+		event.startTime = startime;
+		event.endTime = endtime;
+		event.location = location;
+		event.description = description;
+		event.pcnlist = pcnlist;
+
+		//TODO create event and call callback
 	}, 
 
 	update: function(id, nameopt, startimeopt, durationopt, description, locationopt, callback) {
@@ -42,7 +49,7 @@ module.exports = {
 		//if valid
 		callback(null, result);
 	}
-
 };
+
 
 
