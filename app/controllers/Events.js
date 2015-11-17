@@ -28,12 +28,13 @@ router.route(path)
     .post(function (req, res) {
         var name = req.param('name').value;
         var startime = req.param('startime').value;
+        var endtime = req.param('endtime').value;
         var location = req.param('location').value;
-        var startimeopt = req.param('startimeopt').value;
         var description = req.param('description').value;
+        var pcnlist = req.param('pcnlist').value;
         
 
-        Events.create(name, startime, location, startimeopt, description, function(err, result){
+        Events.create(name, startime, endtime, location,  description, pcnlist, function(err, result){
             if (err) {
                 res.send({error: err});
             }
@@ -48,16 +49,16 @@ path = '/events/{id}'.replace('{',':').replace('}','');
 router.route(path)
     .put(function (req, res) {
         var id = req.param('id').value;
-        var nameopt = req.param('nameopt').value;
-        var startimeopt = req.param('startimeopt').value;
-        var durationopt = req.param('durationopt').value;
+        var name = req.param('name').value;
+        var startime = req.param('startime').value;
+        var duration = req.param('duration').value;
         var description = req.param('description').value;
-        var locationopt = req.param('locationopt').value;
+        var location = req.param('location').value;
         
 
-        Events.update(id, nameopt, startimeopt, durationopt, description, locationopt, function(err, result){
+        Events.update(id, name, startime, duration, description, location, function(err, result){
             if (err) {
-                res.send({error: err});
+                res.json({error: err});
             }
             res.send(result);
         });

@@ -11,17 +11,18 @@ var UserSchema   = new Schema({
     photo: Buffer, 
     ipaddress: String,
     privateLocation: Boolean,
-    privateAgenda: Boolean
+    privateAgenda: Boolean,
+    schedule : [{
+        startTime : Date,
+        endTime : Date,
+        room: {type: String, default: ""},
+        subject: {type: String, default: ""},
+        teacher: {type: String, default: ""},
+        description: {type: String, default: ""},
+        title: {type: String, default: ""}
+    }],
+    minStartTime: String,
+    maxEndTime: String
 });
-
-UserSchema.options.toJSON = {
-    transform: function (doc, ret, options) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__v;
-        return ret;
-    }
-};
-
 
 module.exports = mongoose.model('User', UserSchema);
