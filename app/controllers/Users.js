@@ -28,7 +28,6 @@ router.route(path)
         var pcn = req.param('pcn');
         var email = req.param('email');
         var photo = req.param('photo');
-        var schedule = req.param('schedule');
         var ipaddress = req.param('ipaddress');
 
 
