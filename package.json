@@ -11,9 +11,10 @@
   "dependencies": {
     "body-parser": "~1.0.1",
     "express": "~4.0.0",
+    "moment": "^2.10.6",
     "mongodb-uri": "*",
     "mongoose": "~4.2.3",
     "mongoose-migration": "^0.1.0",
-    "moment": "2.10.*"
+    "morgan": "^1.6.1"
   }
 }
