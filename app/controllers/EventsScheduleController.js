@@ -1,64 +1,47 @@
 EventModel = require('../models/Event');
 UserModel = require('../models/User');
+var moment = require('moment');
 
 //HELPER METHODS
-getIndividualFreeTimes = function(pcnlist) {
-    var individualFreeTimes = [[]]; // Array with count(pcnlist) as size containing the free time of every member for the given period
-    var eventMembers;
-    user.where('pcn')
-        .in(pcnlist)
-        .find('-_id displayName pcn schedule minStartTime maxEndTime',
-        function (err, users) {
-            if (err){
-                callback(err, null);
-                return;
-            }
-            eventMembers = JSON.parse(users);
-        });
-
-    //Get the start and end time of all items in the schedule of every member for a given week
-    for (var i = 0; i <= eventMembers.length;i++) {
-        var schedule = eventMembers[i].schedule;
-        // The time between the beginning of the users agenda till the first schedule item
-        individualFreeTimes[i].push({startTime: eventMembers[i].minStartTime, endTime: schedule[0].startTime});
-
-        for (var j = 0; j < schedule.length-1; j++) {
-            individualFreeTimes[i].push({startTime: schedule[j].endTime, endTime: schedule[j+1].startTime});
-        }
-
-        individualFreeTimes[i].push({startTime: schedule[schedule.length-1].endTime, endTime: eventMembers[i].maxEndTime});
-    }
-    return individualFreeTimes;
-};
-
 getOneFreeTimeSpot = function (startTime, endTime, duration, indexOfUser, freeTimesOfTheDay) {
     var confirmed = 0;
+    duration = duration || 30;
     var sTime = moment(startTime);
-    var eTime = moment(startTime);
-    for (var i = 0;i < freeTimesOfTheDay.length; i++) { // Loop through the free times of every member for a given day
-        if (indexOfUser != i) {
-            //TODO Get the day from the sTime and eTime and use it to compare only with other times from the same day, not all days.
-            for (var j = 0; j < freeTimesOfTheDay[i].length; j++) {
-                var freeSpot = freeTimesOfTheDay[i][j];
-                var sTimeSpot = moment(freeSpot.startTime);
-                var eTimeSpot = moment(freeSpot.endTime);
+    var eTime = moment(endTime);
+    //TODO Get the day from the sTime and eTime and use it to compare only with other times from the same day, not all days.
+    for(var i = 0, l = freeTimesOfTheDay.length; i < l; ++i) { // Loop through members (m)
+        console.log("Start time : "+ sTime.format("DD-MM-YYYY"));
+        console.log("End time : "+ eTime.format("DD-MM-YYYY"));
 
-                if (sTime >= sTimeSpot) {
-                    if (eTime <= eTimeSpot){
-                        confirmed++;
-                        break;
-                    } else if (sTime.add(duration, "minutes") <= eTimeSpot) { // If the end time of the compared free time spot provides at least 15 minutes
-                        confirmed++;
-                        endTime = eTimeSpot;
-                        break;
-                    }
+        var oneFreeTime = freeTimesOfTheDay[i];
+        console.log("---------- Compared to :");
+        console.log(oneFreeTime);
+        console.log("---------- Matches:");
+        for(var j = 0, ln = oneFreeTime.length; j < ln; ++j) {
+            var freeSpot = oneFreeTime[j];
+
+            // Convert the start & end times to moment objects
+            var sTimeSpot = moment(freeSpot["startTime"]);
+            var eTimeSpot = moment(freeSpot["endTime"]);
+            if (sTime.isAfter(sTimeSpot) || sTime.isSame(sTimeSpot)) {
+                if (eTime.isBefore(eTimeSpot) || eTime.isSame(eTimeSpot)){
+                    confirmed++;
+                    console.log("Confirmations: "  + confirmed + " for " + sTime.format("DD-MM-YYYY") + " till " + eTime.format("DD-MM-YYYY"));
+                } else if (eTimeSpot.diff(sTime, "minutes") >= duration) { // If the end time of the compared free time spot provides at least 15 minutes
+                    eTime = eTimeSpot;
+                    confirmed++;
+                    console.log("End match shortened to :" + eTime);
                 }
             }
         }
     }
+    console.log("---- RESULTS: "+confirmed);
+    console.log("---- REQUIRED confirms: " + freeTimesOfTheDay.length);
+    console.log("\n \n \n \n");
 
-    if (confirmed == freeTimesOfTheDay.length-1) {
-        return {startTime: startTime, endTime: endTime};
+
+    if (confirmed == freeTimesOfTheDay.length) {
+        return {startTime: sTime, endTime: eTime};
     }
 
     return {};
@@ -66,30 +49,58 @@ getOneFreeTimeSpot = function (startTime, endTime, duration, indexOfUser, freeTi
 
 getCommonFreeTimes = function (duration, individualFreeTimes) {
     var commonFreeTimes = [];
-    for (var m= 0; m <= individualFreeTimes.length; m++) { // Loop through members (m)
-        for (var d = 0; d <= individualFreeTimes[m].length; d++) { // Loop through days (d) Monday - Friday of member's schedule
-            for (var s = 0; s <= individualFreeTimes[m][d].length; s++) { // Loop through the items for the day
-                var scheduleItem = individualFreeTime[m][d][s];
-                var freeTimeBlock = getOneFreeTimeSpot(scheduleItem.startTime, scheduleItem.endTime, duration, m, individualFreeTimes);
-                if (freeTimeBlock.keys.length > 0) {
-                    commonFreeTimes.push(freeTimeBlock);
-                }
-            }
+    for(var i = 0, l = individualFreeTimes.length; i < l; ++i) { // Loop through members (m)
+        var oneFreeTime = individualFreeTimes[i];
+        for(var j = 0, ln = oneFreeTime.length; j < ln; ++j) {
+            var freeTime = oneFreeTime[j];
+            var freeTimeSpot = getOneFreeTimeSpot(freeTime.startTime, freeTime.endTime, duration, i, individualFreeTimes);
+            commonFreeTimes.push(freeTimeSpot);
         }
     }
     return commonFreeTimes;
 };
 
+getIndividualFreeTimes = function(pcnlist, duration, cb) {
+    var individualFreeTimes = []; // Array with count(pcnlist) as size containing the free time of every member for the given period
+    //TODO read string array from GET params
+    var pcnlisthard = [51, 48];
+
+    UserModel.find()
+        .where('pcn')
+        .in(pcnlisthard)
+        .exec(function (err, users) {
+            if (err){
+                cb(err, null);
+                return;
+            }
+
+            //Get the start and end time of all items in the schedule of every member for a given week
+            for (var i = 0, l = users.length; i < l; ++i) {
+                var userTimes = [];
+                var schedule = users[i].schedule;
+
+                // The time between the beginning of the users agenda till the first schedule item
+                userTimes.push({startTime: users[i].minStartTime, endTime: schedule[schedule.length-1].startTime});
+
+                var length = users[i].schedule.length-1;
+                for (var j = length; j > 0; --j) {
+                    userTimes.push({startTime: users[i].schedule[j].endTime, endTime: users[i].schedule[j-1].startTime});
+                }
+
+                userTimes.push({startTime: schedule[0].endTime, endTime: users[i].maxEndTime});
+                individualFreeTimes.push(userTimes);
+                console.log("INDIVIDUAL TIMES:");
+                console.log(individualFreeTimes);
+
+            }
+            var commonFreeTimes = JSON.stringify(getCommonFreeTimes(duration, individualFreeTimes));
+            cb(null, commonFreeTimes);
+        });
+};
 
 module.exports = {
     index: function(pcnlist, duration, callback) {
-        var individualFreeTimes = getIndividualFreeTimes(pcnlist);
-        var commonFreeTimes = getCommonFreeTimes(duration, individualFreeTimes);
-        if (commonFreeTimes.length != 0) {
-            callback(null, JSONArray.parse(commonFreeTimes));
-        } else {
-            callback({error: "No free times available for the given period."}, null);
-        }
+        getIndividualFreeTimes(pcnlist, duration, callback);
     }
 };
 
