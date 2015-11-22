@@ -13,6 +13,7 @@ var UserSchema   = new Schema({
     privateLocation: Boolean,
     privateAgenda: Boolean,
     schedule : [{
+        id: {type: String, index:{ unique: true}},
         startTime : Date,
         endTime : Date,
         room: {type: String, default: ""},
