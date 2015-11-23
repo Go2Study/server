@@ -13,7 +13,7 @@ var UserSchema   = new Schema({
     privateLocation: Boolean,
     privateAgenda: Boolean,
     schedule : [{
-        id: {type: String, index:{ unique: true}},
+        scheduleId: {type: String, default: ""},
         startTime : Date,
         endTime : Date,
         room: {type: String, default: ""},
@@ -22,8 +22,8 @@ var UserSchema   = new Schema({
         description: {type: String, default: ""},
         title: {type: String, default: ""}
     }],
-    minStartTime: String,
-    maxEndTime: String
+    minStartTime: Date,
+    maxEndTime: Date
 });
 
 module.exports = mongoose.model('User', UserSchema);

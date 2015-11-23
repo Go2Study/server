@@ -3,42 +3,62 @@ UserModel = require('../models/User');
 var moment = require('moment');
 
 //HELPER METHODS
-getOneFreeTimeSpot = function (startTime, endTime, duration, indexOfUser, freeTimesOfTheDay) {
+thingsEqual = function(thing1, thing2) {
+    return thing1.startTime == thing2.startTime
+        && thing1.endTime == thing2.endTime;
+};
+
+arrayContains = function(arr, val, equals) {
+    var i = arr.length;
+    while (i--) {
+        if ( equals(arr[i], val) ) {
+            return true;
+        }
+    }
+    return false;
+};
+
+removeDuplicates = function(arr, equals) {
+    var originalArr = arr.slice(0);
+    var i, len, j, val;
+    arr.length = 0;
+
+    for (i = 0, len = originalArr.length; i < len; ++i) {
+        val = originalArr[i];
+        if (!arrayContains(arr, val, equals)) {
+            arr.push(val);
+        }
+    }
+};
+
+
+
+getOneFreeTimeSpot = function (startTime, endTime, duration, freeTimesOfTheDay) {
     var confirmed = 0;
     duration = duration || 30;
     var sTime = moment(startTime);
     var eTime = moment(endTime);
-    //TODO Get the day from the sTime and eTime and use it to compare only with other times from the same day, not all days.
+
     for(var i = 0, l = freeTimesOfTheDay.length; i < l; ++i) { // Loop through members (m)
-        console.log("Start time : "+ sTime.format("DD-MM-YYYY"));
-        console.log("End time : "+ eTime.format("DD-MM-YYYY"));
-
         var oneFreeTime = freeTimesOfTheDay[i];
-        console.log("---------- Compared to :");
-        console.log(oneFreeTime);
-        console.log("---------- Matches:");
-        for(var j = 0, ln = oneFreeTime.length; j < ln; ++j) {
-            var freeSpot = oneFreeTime[j];
+            for(var j = 0, ln = oneFreeTime.length; j < ln; ++j) {
+                var freeSpot = oneFreeTime[j];
 
-            // Convert the start & end times to moment objects
-            var sTimeSpot = moment(freeSpot["startTime"]);
-            var eTimeSpot = moment(freeSpot["endTime"]);
-            if (sTime.isAfter(sTimeSpot) || sTime.isSame(sTimeSpot)) {
-                if (eTime.isBefore(eTimeSpot) || eTime.isSame(eTimeSpot)){
-                    confirmed++;
-                    console.log("Confirmations: "  + confirmed + " for " + sTime.format("DD-MM-YYYY") + " till " + eTime.format("DD-MM-YYYY"));
-                } else if (eTimeSpot.diff(sTime, "minutes") >= duration) { // If the end time of the compared free time spot provides at least 15 minutes
-                    eTime = eTimeSpot;
-                    confirmed++;
-                    console.log("End match shortened to :" + eTime);
+                // Convert the start & end times to moment objects
+                var sTimeSpot = moment(freeSpot["startTime"]);
+                var eTimeSpot = moment(freeSpot["endTime"]);
+                if (sTime.isAfter(sTimeSpot) || sTime.isSame(sTimeSpot)) {
+                    if (eTime.isBefore(eTimeSpot) || eTime.isSame(eTimeSpot)){
+                        confirmed++;
+                        break;
+                    } else if (eTimeSpot.diff(sTime, "minutes") >= duration) { // If the end time of the compared free time spot provides at least 15 minutes
+                        eTime = eTimeSpot;
+                        confirmed++;
+                        break;
+                    }
                 }
             }
-        }
     }
-    console.log("---- RESULTS: "+confirmed);
-    console.log("---- REQUIRED confirms: " + freeTimesOfTheDay.length);
-    console.log("\n \n \n \n");
-
 
     if (confirmed == freeTimesOfTheDay.length) {
         return {startTime: sTime, endTime: eTime};
@@ -49,22 +69,35 @@ getOneFreeTimeSpot = function (startTime, endTime, duration, indexOfUser, freeTi
 
 getCommonFreeTimes = function (duration, individualFreeTimes) {
     var commonFreeTimes = [];
+
     for(var i = 0, l = individualFreeTimes.length; i < l; ++i) { // Loop through members (m)
+
         var oneFreeTime = individualFreeTimes[i];
+        //Remove the current schedule items from the list, to skip iterating over them
+        var freeTimesOfOtherMembers = individualFreeTimes.filter(function (freeTime){
+            return freeTime != oneFreeTime;
+        });
+
         for(var j = 0, ln = oneFreeTime.length; j < ln; ++j) {
             var freeTime = oneFreeTime[j];
-            var freeTimeSpot = getOneFreeTimeSpot(freeTime.startTime, freeTime.endTime, duration, i, individualFreeTimes);
-            commonFreeTimes.push(freeTimeSpot);
+            var freeTimeSpot = getOneFreeTimeSpot(freeTime.startTime, freeTime.endTime, duration, freeTimesOfOtherMembers);
+
+            if (Object.keys(freeTimeSpot).length > 0){
+                commonFreeTimes.push(freeTimeSpot);
+            }
         }
     }
+
+    // Filter out duplicates
+    removeDuplicates(commonFreeTimes, thingsEqual);
+
     return commonFreeTimes;
 };
 
 getIndividualFreeTimes = function(pcnlist, duration, cb) {
     var individualFreeTimes = []; // Array with count(pcnlist) as size containing the free time of every member for the given period
     //TODO read string array from GET params
-    var pcnlisthard = [51, 48];
-
+    var pcnlisthard = [49, 87, 96, 19];
     UserModel.find()
         .where('pcn')
         .in(pcnlisthard)
@@ -89,14 +122,14 @@ getIndividualFreeTimes = function(pcnlist, duration, cb) {
 
                 userTimes.push({startTime: schedule[0].endTime, endTime: users[i].maxEndTime});
                 individualFreeTimes.push(userTimes);
-                console.log("INDIVIDUAL TIMES:");
-                console.log(individualFreeTimes);
-
             }
             var commonFreeTimes = JSON.stringify(getCommonFreeTimes(duration, individualFreeTimes));
             cb(null, commonFreeTimes);
         });
 };
+
+
+
 
 module.exports = {
     index: function(pcnlist, duration, callback) {
