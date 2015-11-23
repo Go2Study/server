@@ -16,9 +16,6 @@ router.route(path)
             }
             res.send(result);
         });
-
-        res.send({'error': { 'code' : '401', 'message' : 'Bad request.' }});
-
     });
 
 module.exports = router;
