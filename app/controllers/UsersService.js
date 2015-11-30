@@ -27,7 +27,7 @@ module.exports = {
         });
     },
 
-	create: function(firstName, lastName, pcn, email, photo, ipaddress, callback) {
+	create: function(firstName, lastName, pcn, email, className, photo, ipaddress, callback) {
         var newUser = new UserModel();
         newUser.firstName = firstName;
         newUser.lastName = lastName;
@@ -40,6 +40,7 @@ module.exports = {
         newUser.privateLocation = false; // Location is publicly known by default
         newUser.minStartTime = new Date("12-12-2012");
         newUser.maxEndTime = new Date("12-12-2016");
+        newUser.className = className;
         newUser.schedule = [
             {
                 startTime: new Date(2015, (Math.random()*5)+1, (Math.random()*30)+1),

@@ -29,9 +29,10 @@ router.route(path)
         var email = req.param('email');
         var photo = req.param('photo');
         var ipaddress = req.param('ipaddress');
+        var className = req.param('className');
 
 
-        Users.create(firstName, lastName, pcn, email, photo, ipaddress, function(err, user){
+        Users.create(firstName, lastName, pcn, email, className, photo, ipaddress, function(err, user){
             if (err) {
                 console.log(err);
                 res.json({error: err});
