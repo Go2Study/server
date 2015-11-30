@@ -11,13 +11,15 @@
   "dependencies": {
     "body-parser": "~1.0.1",
     "express": "~4.0.0",
+    "jasmine": "^2.3.2",
+    "jsonwebtoken": "^5.4.1",
     "moment": "^2.10.6",
     "mongodb-uri": "*",
     "mongoose": "~4.2.3",
     "mongoose-migration": "^0.1.0",
     "morgan": "^1.6.1",
+    "needle": "^0.11.0",
     "node-gcm": "^0.12.1",
-    "jsonwebtoken": "^5.4.1",
     "randomstring": "^1.1.3"
   }
 }
