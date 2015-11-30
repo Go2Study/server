@@ -23,8 +23,8 @@ router.route(path)
 path = '/users'.replace('{',':').replace('}','');
 router.route(path)
     .post(function (req, res) {
-        var firstName = req.param('firstname');
-        var lastName = req.param('lastname');
+        var firstName = req.param('firstName');
+        var lastName = req.param('lastName');
         var pcn = req.param('pcn');
         var email = req.param('email');
         var photo = req.param('photo');
@@ -38,7 +38,7 @@ router.route(path)
                 res.json({error: err});
             }
 
-            res.send(JSON.stringify(user));
+            res.send(user);
         });
 
 

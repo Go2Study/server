@@ -32,7 +32,7 @@ module.exports = {
         newUser.firstName = firstName;
         newUser.lastName = lastName;
         newUser.displayName = firstName + ' ' + lastName;    //default display name, can be changed by the user later
-        newUser.pcn = pcn+Math.floor((Math.random()*100)+1);
+        newUser.pcn = pcn;
         newUser.email = email;
         newUser.photo = photo;
         newUser.ipaddress = ipaddress; // The current ip address of the client
@@ -57,7 +57,7 @@ module.exports = {
         ];
 
 
-        UserModel.create(user, function (err, res) {
+        UserModel.create(newUser, function (err, res) {
             if (err)
                 callback(err,null); // Error
             callback(null, res);
