@@ -15,6 +15,7 @@
     "mongodb-uri": "*",
     "mongoose": "~4.2.3",
     "mongoose-migration": "^0.1.0",
-    "morgan": "^1.6.1"
+    "morgan": "^1.6.1",
+    "node-gcm": "^0.12.1"
   }
 }
