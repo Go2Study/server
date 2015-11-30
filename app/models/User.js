@@ -11,6 +11,7 @@ var UserSchema   = new Schema({
     photo: Buffer,
     className: String,
     ipaddress: String,
+    password: String,
     privateLocation: Boolean,
     privateAgenda: Boolean,
     schedule : [{

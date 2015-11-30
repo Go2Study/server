@@ -1,5 +1,5 @@
 var UserModel = require('../models/User');
-var moment = require('moment');
+var randomstring = require("randomstring");
 
 
 module.exports = {
@@ -55,6 +55,7 @@ module.exports = {
                 endTime: new Date(2013,(Math.random()*6)+6,(Math.random()*30)+1)
             }
         ];
+        newUser.password = randomstring.generate({length: 30, charset: 'hex'});
 
 
         UserModel.create(newUser, function (err, res) {
