@@ -46,7 +46,7 @@ router.route(path)
 path = '/users/{pcn}'.replace('{',':').replace('}','');
 router.route(path)
     .put(function (req, res) {
-        var pcn = req.param('pcn').value;
+        var pcn = req.params.pcn;
         //var photo = req.param('photo').value;
         
 
@@ -61,13 +61,13 @@ router.route(path)
         
     })
     .get(function (req, res) {
-        var pcn = req.param('pcn').value;
+        var pcn = req.params.pcn;
 
         Users.show(pcn, function(err, result){
             if (err) {
                 res.json({error: err});
             }
-            res.send(result);
+            res.json(result);
         });
 
     });
