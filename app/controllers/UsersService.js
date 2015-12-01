@@ -4,8 +4,16 @@ var randomstring = require("randomstring");
 
 module.exports = {
 
-	index: function(user, callback) {
-        UserModel.find({}, '-_id firstName lastName displayName pcn email photo ipaddress schedule minStartTime maxEndTime', function (err, users) {
+	index: function(query, callback) {
+
+        var queryOptions = [
+            {'firstName': { "$regex": query, "$options": "i"}},
+            {'lastName': { "$regex": query, "$options": "i"}},
+            {'displayName': { "$regex": query, "$options": "i"}},
+            {'email': { "$regex": query, "$options": "i"}}
+        ];
+
+        UserModel.find({$or : queryOptions}, '-_id firstName lastName displayName pcn email photo ipaddress schedule minStartTime maxEndTime', function (err, users) {
             if (err)
                 callback(err, null);
             callback(null, users);
@@ -34,6 +42,8 @@ module.exports = {
         newUser.minStartTime = new Date("12-12-2012");
         newUser.maxEndTime = new Date("12-12-2016");
         newUser.className = className;
+
+        //TODO generate this password on client side and generate a JWT before creating the user
         newUser.password = randomstring.generate({length: 30, charset: 'hex'});
         newUser.schedule = [
             {

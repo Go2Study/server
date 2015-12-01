@@ -9,9 +9,9 @@ var Users = require('./UsersService');
 path = '/users'.replace('{',':').replace('}','');
 router.route(path)
     .get(function (req, res) {
-        var query = (typeof req.param('query') === 'undefined') ? '0' : req.param('query');
+        var query = (typeof req.param('query') === 'undefined') ? '' : req.param('query');
 
-        Users.index(user, function(err, result){
+        Users.index(query, function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);
@@ -40,7 +40,7 @@ path = '/users/{pcn}'.replace('{',':').replace('}','');
 router.route(path)
     .put(function (req, res) {
         var pcn = req.params.pcn;
-        //var photo = req.param('photo');
+        var photo = req.param('photo');
 
         Users.update(pcn, photo, function(err, result){
             if (err)
