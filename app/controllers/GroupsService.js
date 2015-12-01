@@ -13,7 +13,7 @@ module.exports = {
 	},
 
 	show: function(groupid, callback) {
-        GroupModel.findOne({groupid: groupid}, '-_id id name description pcnlist', function (err, group) {
+        GroupModel.findOne({id: groupid}, '-_id id name description pcnlist', function (err, group) {
             if (err)
                 callback(err, null);
             callback(null, group);
@@ -25,12 +25,15 @@ module.exports = {
         group.name = name;
         group.pcnlist = pcnlist.split(',');
         group.description = description;
+
+        //TODO use the randomstring library
         group.id = Math.floor(Math.random()*20);
 
-        group.save(validateBeforeSave = true, function(err){
+        group.save(validateBeforeSave = true, function(err, res){
             if (err)
                 callback(err, null);
-            callback(null, {success: 'Created a new group : ' + name});
+            //callback(null, {success: 'Created a new group : ' + name});
+            callback(null, res);
         });
 	}, 
 

@@ -26,9 +26,8 @@ router.route(path)
         var description = req.param('description');
 
         Groups.create(name, pcnlist, description, function(err, result){
-            if (err) {
+            if (err)
                 res.json({error: err});
-            }
             res.json(result);
         });
     });
