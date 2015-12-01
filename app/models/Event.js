@@ -10,7 +10,11 @@ var EventSchema   = new Schema({
     description: String,
     startTime: Date,
     endTime: Date,
-    location: String
+    location: String,
+    pcnlist: [{
+                 pcn: {type: String, default: ""},
+                 status: {type: String, default: "invited"},
+             }]
 });
 
 
