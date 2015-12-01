@@ -4,22 +4,20 @@ GroupModel = require('../models/Group');
 module.exports = {
 
 	index: function(query, callback) {
-        GroupModel.find({}, '-_id id name description pcnlist', function (err, users) {
-            if (err){
+        //TODO Implement query parameter (find in any fields)
+        GroupModel.find({}, '-_id id name description pcnlist', function (err, groups) {
+            if (err)
                 callback(err, null);
-                return;
-            }
-
-            callback(null, JSON.stringify(users));
+            callback(null, groups);
         });
 	},
 
-	show: function(query, callback) {
-		//if error
-		callback(err, null);
-
-		//if valid
-		callback(null, result);
+	show: function(groupid, callback) {
+        GroupModel.findOne({groupid: groupid}, '-_id id name description pcnlist', function (err, group) {
+            if (err)
+                callback(err, null);
+            callback(null, group);
+        });
 	},
 
 	create: function(name, pcnlist, description, callback) {
@@ -30,32 +28,34 @@ module.exports = {
         group.id = Math.floor(Math.random()*20);
 
         group.save(validateBeforeSave = true, function(err){
-            if (err){
+            if (err)
                 callback(err, null);
-                return err;
-            }
-
             callback(null, {success: 'Created a new group : ' + name});
         });
 	}, 
 
 	update: function(groupid, name, description, callback) {
-		//if error
-		callback(err, null);
+        var conditions = { id: groupid }
+            , update = { name: name, description: description}
+            , options = { multi: true };
 
-		//if valid
-		callback(null, result);
+        GroupModel.update(conditions, update, options, function(err, numAffected){
+            if (err)
+                callback(err, null);
+
+            if (numAffected>0) {
+                callback(null, {success: 'Updated details for '+numAffected+' rows'});
+            }
+        });
 	}, 
 
 	delete: function(groupid, callback) {
-
         GroupModel.findOneAndRemove({id : groupid}, function (err, group){
             if (err)
                 callback(err, null);
-            callback(null, {success: 'Succesfully deleted group '});
+            callback(null, group);
         });
 	}
-
 };
 
 
