@@ -16,9 +16,9 @@ router.route(path)
 
         UserGroups.index(pcn, query, function(err, result){
             if (err) {
-                res.send({error: err});
+                res.json({error: err});
             }
-            res.send(result);
+            res.json(result);
         });
     });
 
