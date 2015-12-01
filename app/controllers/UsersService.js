@@ -67,17 +67,11 @@ module.exports = {
 	},
 
 	update: function(pcn, photo, callback) {
-        var conditions = { pcn: pcn }
-            , update = { photo: photo }
-            , options = { multi: true };
 
-        UserModel.update(conditions, update, options, function(err, numAffected){
+        UserModel.findOneAndUpdate({ pcn: pcn }, { photo: photo }, function(err, res){
             if (err)
                 callback(err, null);
-
-            if (numAffected>0) {
-                callback(null, '{success: '+numAffected+' users changed');
-            }
+            callback(null, res);
         });
 	}
 };
