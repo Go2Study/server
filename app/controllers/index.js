@@ -3,7 +3,6 @@ var express = require('express')
 
 var jwt       = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
-
 // Route the Auth path first, so that the middleware does not check it for token
 router.use('/', require('./Authenticate'));
 
@@ -51,7 +50,7 @@ router.use('/', require('./EventsSchedule'));
 
 
 router.get('/', function(req, res) {
-    res.send('Home page');
+    res.json('Home page');
 });
 
 module.exports = router;
