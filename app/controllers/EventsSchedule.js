@@ -7,14 +7,14 @@ var EventsSchedule = require('./EventsScheduleController');
 path = '/events/schedule'.replace('{',':').replace('}','');
 router.route(path)
     .get(function (req, res) {
-        var pcnlist = req.param('pcnlist').value;
-        var duration = req.param('duration').value;
+        var pcnlist = req.param('pcnlist');
+        var duration = req.param('duration');
 
         EventsSchedule.index(pcnlist, duration, function(err, result){
             if (err) {
-                res.send({error: err});
+                res.json({error: err});
             }
-            res.send(result);
+            res.json(result);
         });
     });
 
