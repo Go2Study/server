@@ -7,18 +7,6 @@ var morgan      = require('morgan');
 
 var app        = express();                 // define our app using express
 
-
-//JASMINE (testing)
-var Jasmine = require('jasmine');
-var jasmine = new Jasmine();
-
-jasmine.loadConfigFile('spec/support/jasmine.json');
-jasmine.configureDefaultReporter({
-    showColors: true
-});
-jasmine.execute();
-
-
 //MongoDB connection
 var rawURI = 'mongodb://g2sadmin:G2SMONGOADMIN77@ds047524.mongolab.com:47524/go2study';
 var mongoURI = uriUtil.formatMongoose(rawURI);
@@ -30,11 +18,9 @@ db.once('open', function (callback) {
    //We have connected
 });
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
+// Body Parser used for getting POST data
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-//app.use(bodyParser());
 
 var port = process.env.PORT || 8080;        // set our port
 
