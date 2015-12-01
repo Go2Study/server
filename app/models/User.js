@@ -24,6 +24,7 @@ var UserSchema   = new Schema({
         description: {type: String, default: ""},
         title: {type: String, default: ""}
     }],
+    favourites: [String],
     minStartTime: Date,
     maxEndTime: Date
 });
