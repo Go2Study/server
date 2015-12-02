@@ -8,7 +8,7 @@ path = '/users/{pcn}/events'.replace('{',':').replace('}','');
 router.route(path)
     .get(function (req, res) {
         var pcn = req.param('pcn');
-        var query = req.param('query');
+        var query = (typeof req.param('query') === 'undefined') ? '' : req.param('query');
 
         UserEvents.index(pcn, query, function(err, result){
             if (err)
