@@ -1,5 +1,6 @@
 EventModel = require('../models/Event');
 UserModel = require('../models/User');
+//randomstring = require("./lib/randomstring");
 
 module.exports = {
 
@@ -19,18 +20,19 @@ module.exports = {
 		});
 	},
 
-	create: function(name, startime, endtime, location, description, pcnlist, callback) {
+	create: function(name, startTime, endTime, location, description, pcnlist, callback) {
 		//Create event model
 		var event = new EventModel();
-		event.name = name;
-		event.startTime = startime;
-		event.endTime = endtime;
+		event.title = name;
+		//event.id = randomstring() TODO add id
+		event.startTime = startTime;
+		event.endTime = endTime;
 		event.location = location;
 		event.description = description;
-		event.pcnlist = pcnlist;
 
+		var pcnArray = pcnlist.split(",");
 		//Add the list of PCN numbers to the event list, setting the status as invited (default)
-		pcnlist.forEach(function (e){
+		pcnArray.forEach(function (e){
 			event.pcnlist.push({pcn: e, status: "invited"});
 		});
 

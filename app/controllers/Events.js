@@ -21,13 +21,13 @@ path = '/events'.replace('{',':').replace('}','');
 router.route(path)
     .post(function (req, res) {
         var name = req.param('name');
-        var startime = req.param('startime');
-        var endtime = req.param('endtime');
+        var startTime = req.param('startTime');
+        var endTime = req.param('endTime');
         var location = req.param('location');
         var description = req.param('description');
-        var pcnlist = JSON.parse(req.param('pcnlist'));
+        var pcnlist = req.param('pcnlist');
 
-        Events.create(name, startime, endtime, location,  description, pcnlist, function(err, result){
+        Events.create(name, startTime, endTime, location,  description, pcnlist, function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);
