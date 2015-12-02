@@ -25,13 +25,15 @@ router.route(path)
                 res.json({error: err});
             res.json(result);
         });
-    })
+    });
 
+path = '/users/{pcn}/favourites/{pcnfavourite}'.replace('{',':').replace('}','').replace('{',':').replace('}','');
+router.route(path)
     .delete(function (req, res) {
         var pcn = req.param('pcn');
-        var pcnfavourite = req.param('pcn');
+        var pcnfavourite = req.param('pcnfavourite');
 
-        UserFavourites.usersPcnFavouritesDelete(pcn, pcnfavourite, function(err, result){
+        UserFavourites.delete(pcn, pcnfavourite, function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);

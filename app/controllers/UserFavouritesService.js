@@ -5,7 +5,7 @@ module.exports = {
 
 	index: function(pcn, callback) {
 		//TODO Implement query parameter (find in any fields)
-		UserModel.find({pcn: pcn}, '-_id favourites', function (err, favs) {
+		UserModel.findOne({pcn: pcn}, '-_id favourites', function (err, favs) {
 			if (err)
 				callback(err, null);
 			callback(null, favs);
@@ -13,32 +13,18 @@ module.exports = {
 	}, 
 
 	create: function(pcn, pcnfavourite, callback) {
-		var conditions = { pcn: pcn }
-			, update = {$push: {favourites: pcnfavourite}}
-			, options = { multi: true };
-
-		UserModel.findOneAndUpdate(conditions, update, options, function(err, numAffected){
+		UserModel.findOneAndUpdate({pcn: pcn, favourites: {$ne: pcnfavourite}}, {$addToSet: {favourites: pcnfavourite}}, function(err, res){
 			if (err)
 				callback(err, null);
-
-			if (numAffected>0) {
-				callback(null, '{success: '+numAffected+' users changed');
-			}
+			callback(null, res);
 		});
-	}, 
+	},
 
 	delete: function(pcn, pcnfavourite, callback) {
-		var conditions = { pcn: pcn }
-			, update = {$pull: {favourites: pcnfavourite}}
-			, options = { multi: true };
-
-		UserModel.findOneAndUpdate(conditions, update, options, function(err, numAffected){
+		UserModel.findOneAndUpdate({pcn: pcn}, {$pull: {favourites: pcnfavourite}}, function(err, res){
 			if (err)
 				callback(err, null);
-
-			if (numAffected>0) {
-				callback(null, '{success: '+numAffected+' users changed');
-			}
+			callback(null, res);
 		});
 	}
 };
