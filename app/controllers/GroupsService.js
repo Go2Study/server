@@ -32,25 +32,17 @@ module.exports = {
         group.save(validateBeforeSave = true, function(err, res){
             if (err)
                 callback(err, null);
-            //callback(null, {success: 'Created a new group : ' + name});
             callback(null, res);
         });
 	}, 
 
 	update: function(groupid, name, description, callback) {
-        var conditions = { id: groupid }
-            , update = { name: name, description: description}
-            , options = { multi: true };
-
-        GroupModel.update(conditions, update, options, function(err, numAffected){
+        GroupModel.findOneAndUpdate({id: groupid}, {name: name, description: description}, function(err, res){
             if (err)
                 callback(err, null);
-
-            if (numAffected>0) {
-                callback(null, {success: 'Updated details for '+numAffected+' rows'});
-            }
+            callback(null, res);
         });
-	}, 
+	},
 
 	delete: function(groupid, callback) {
         GroupModel.findOneAndRemove({id : groupid}, function (err, group){
