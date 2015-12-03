@@ -4,25 +4,26 @@ var randomstring = require("randomstring");
 
 module.exports = {
 
-	index: function(user, callback) {
+	index: function(query, callback) {
 
-        UserModel.find({}, '-_id firstName lastName displayName pcn email photo ipaddress schedule minStartTime maxEndTime', function (err, users) {
-            if (err){
+        var queryOptions = [
+            {'firstName': { "$regex": query, "$options": "i"}},
+            {'lastName': { "$regex": query, "$options": "i"}},
+            {'displayName': { "$regex": query, "$options": "i"}},
+            {'email': { "$regex": query, "$options": "i"}}
+        ];
+
+        UserModel.find({$or : queryOptions}, '-_id firstName lastName displayName pcn email photo ipaddress schedule minStartTime maxEndTime', function (err, users) {
+            if (err)
                 callback(err, null);
-                return;
-            }
-
-            callback(null, JSON.stringify(users));
+            callback(null, users);
         });
 	},
 
     show: function(pcn, callback) {
-        UserModel.findOne({pcn: pcn}, '-_id firstName lastName displayName pcn email photo ipaddress', function (err, user) {
-            if (err){
+        UserModel.findOne({pcn: pcn}, '-_id firstName lastName displayName pcn email photo ipaddress schedule', function (err, user) {
+            if (err)
                 callback(err, null);
-                return;
-            }
-            console.log(user);
             callback(null, user);
         });
     },
@@ -41,6 +42,9 @@ module.exports = {
         newUser.minStartTime = new Date("12-12-2012");
         newUser.maxEndTime = new Date("12-12-2016");
         newUser.className = className;
+
+        //TODO generate this password on client side and generate a JWT before creating the user
+        newUser.password = randomstring.generate({length: 30, charset: 'hex'});
         newUser.schedule = [
             {
                 startTime: new Date(2015, (Math.random()*5)+1, (Math.random()*30)+1),
@@ -53,10 +57,7 @@ module.exports = {
             {
                 startTime: new Date(2013,(Math.random()*5)+1,(Math.random()*30)+1),
                 endTime: new Date(2013,(Math.random()*6)+6,(Math.random()*30)+1)
-            }
-        ];
-        newUser.password = randomstring.generate({length: 30, charset: 'hex'});
-
+            }];
 
         UserModel.create(newUser, function (err, res) {
             if (err)
@@ -67,20 +68,12 @@ module.exports = {
 
 	update: function(pcn, photo, callback) {
 
-        var conditions = { pcn: pcn }
-            , update = { photo: photo }
-            , options = { multi: true };
-
-        UserModel.update(conditions, update, options, function(err, numAffected){
-            if (err){
+        UserModel.findOneAndUpdate({ pcn: pcn }, { photo: photo }, function(err, res){
+            if (err)
                 callback(err, null);
-            }
-            if (numAffected>0) {
-                callback(null, '{success: '+numAffected+' users changed');
-            }
+            callback(null, res);
         });
 	}
-
 };
 
 

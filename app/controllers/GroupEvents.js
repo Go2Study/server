@@ -2,25 +2,20 @@ var express = require('express')
     , router = express.Router();
 
 
-var path, httpMethod;
-var GroupEvents = require('./GroupEventsService');
+var path;
+var GroupEvents = require('./GroupEventsController');
 
 
 path = '/groups/{id}/events'.replace('{',':').replace('}','');
 router.route(path)
     .get(function (req, res) {
-        var id = req.param('id').value;
-        
+        var id = req.param('id');
 
         GroupEvents.index(id, function(err, result){
-            if (err) {
-                res.send({error: err});
-            }
-            res.send(result);
+            if (err)
+                res.json({error: err});
+            res.json(result);
         });
-
-        res.send({'error': { 'code' : '401', 'message' : 'Bad request.' }});   
-        
     });
 
 module.exports = router;

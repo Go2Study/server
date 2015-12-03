@@ -14,6 +14,7 @@ var UserSchema   = new Schema({
     password: String,
     privateLocation: Boolean,
     privateAgenda: Boolean,
+    //schedule: EventSchema,
     schedule : [{
         scheduleId: {type: String, default: ""},
         startTime : Date,
@@ -24,8 +25,9 @@ var UserSchema   = new Schema({
         description: {type: String, default: ""},
         title: {type: String, default: ""}
     }],
-    minStartTime: Date,
-    maxEndTime: Date
+    favourites: [String],
+    minStartTime: String,
+    maxEndTime: String
 });
 
 module.exports = mongoose.model('User', UserSchema);

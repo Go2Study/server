@@ -95,12 +95,13 @@ getCommonFreeTimes = function (duration, individualFreeTimes) {
 };
 
 getIndividualFreeTimes = function(pcnlist, duration, cb) {
+    console.log("getting individual times");
     var individualFreeTimes = []; // Array with count(pcnlist) as size containing the free time of every member for the given period
     //TODO read string array from GET params
-    var pcnlisthard = [49, 87, 96, 19];
+    var pcnList = pcnlist.split(",");
     UserModel.find()
         .where('pcn')
-        .in(pcnlisthard)
+        .in(pcnList)
         .exec(function (err, users) {
             if (err){
                 cb(err, null);
@@ -123,7 +124,7 @@ getIndividualFreeTimes = function(pcnlist, duration, cb) {
                 userTimes.push({startTime: schedule[0].endTime, endTime: users[i].maxEndTime});
                 individualFreeTimes.push(userTimes);
             }
-            var commonFreeTimes = JSON.stringify(getCommonFreeTimes(duration, individualFreeTimes));
+            var commonFreeTimes = getCommonFreeTimes(duration, individualFreeTimes);
             cb(null, commonFreeTimes);
         });
 };

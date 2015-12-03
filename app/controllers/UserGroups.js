@@ -3,7 +3,7 @@ var express = require('express')
 
 
 var path, httpMethod;
-var UserGroups = require('./UserGroupsService');
+var UserGroups = require('./UserGroupsController');
 
 
 path = '/users/{pcn}/groups'.replace('{',':').replace('}','');
@@ -16,9 +16,9 @@ router.route(path)
 
         UserGroups.index(pcn, query, function(err, result){
             if (err) {
-                res.send({error: err});
+                res.json({error: err});
             }
-            res.send(result);
+            res.json(result);
         });
     });
 

@@ -3,9 +3,9 @@ var express = require('express')
 
 var jwt       = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
-
 // Route the Auth path first, so that the middleware does not check it for token
-router.use('/', require('./Authenticate'));
+//TODO Uncomment to enable Authentication
+/*router.use('/', require('./Authenticate'));
 
 // Route middleware to verify token
 router.use(function(req, res, next) {
@@ -37,7 +37,7 @@ router.use(function(req, res, next) {
         });
 
     }
-});
+});*/
 
 //Route all paths, which require authentication
 router.use('/', require('./Users'));
@@ -46,12 +46,13 @@ router.use('/', require('./UserEvents'));
 router.use('/', require('./UserFavourites'));
 router.use('/', require('./Groups'));
 router.use('/', require('./GroupEvents'));
-router.use('/', require('./Events'));
 router.use('/', require('./EventsSchedule'));
+router.use('/', require('./Events'));
+router.use('/', require('./Chat'));
 
 
 router.get('/', function(req, res) {
-    res.send('Home page');
+    res.json('Home page');
 });
 
 module.exports = router;
