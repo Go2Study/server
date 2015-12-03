@@ -46,8 +46,9 @@ router.use('/', require('./UserEvents'));
 router.use('/', require('./UserFavourites'));
 router.use('/', require('./Groups'));
 router.use('/', require('./GroupEvents'));
-router.use('/', require('./Events'));
 router.use('/', require('./EventsSchedule'));
+router.use('/', require('./Events'));
+
 
 
 router.get('/', function(req, res) {
