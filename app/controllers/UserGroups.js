@@ -3,7 +3,7 @@ var express = require('express')
 
 
 var path, httpMethod;
-var UserGroups = require('./UserGroupsService');
+var UserGroups = require('./UserGroupsController');
 
 
 path = '/users/{pcn}/groups'.replace('{',':').replace('}','');

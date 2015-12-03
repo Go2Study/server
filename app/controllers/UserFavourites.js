@@ -2,7 +2,7 @@ var express = require('express')
     , router = express.Router();
 
 var path;
-var UserFavourites = require('./UserFavouritesService');
+var UserFavourites = require('./UserFavouritesController');
 
 path = '/users/{pcn}/favourites'.replace('{',':').replace('}','');
 router.route(path)

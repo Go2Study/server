@@ -3,7 +3,7 @@ var express = require('express')
 
 
 var path;
-var Events = require('./EventsService');
+var Events = require('./EventsController');
 var EventsSchedule = require('./EventsScheduleController');
 
 

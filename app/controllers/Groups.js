@@ -3,7 +3,7 @@ var express = require('express')
 
 
 var path;
-var Groups = require('./GroupsService');
+var Groups = require('./GroupsController');
 
 path = '/groups'.replace('{',':').replace('}','');
 router.route(path)

@@ -3,7 +3,7 @@ var express = require('express')
 
 
 var path;
-var GroupEvents = require('./GroupEventsService');
+var GroupEvents = require('./GroupEventsController');
 
 
 path = '/groups/{id}/events'.replace('{',':').replace('}','');

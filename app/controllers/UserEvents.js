@@ -2,7 +2,7 @@ var express = require('express')
     , router = express.Router();
 
 var path;
-var UserEvents = require('./UserEventsService');
+var UserEvents = require('./UserEventsController');
 
 path = '/users/{pcn}/events'.replace('{',':').replace('}','');
 router.route(path)

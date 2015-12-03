@@ -3,7 +3,7 @@ var express = require('express')
 
 
 var path;
-var Users = require('./UsersService');
+var Users = require('./UsersController');
 
 
 path = '/users'.replace('{',':').replace('}','');

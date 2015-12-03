@@ -1,6 +1,5 @@
 EventModel = require('../models/Event');
 UserModel = require('../models/User');
-//randomstring = require("./lib/randomstring");
 
 module.exports = {
 
