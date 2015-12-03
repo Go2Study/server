@@ -48,7 +48,7 @@ router.use('/', require('./Groups'));
 router.use('/', require('./GroupEvents'));
 router.use('/', require('./EventsSchedule'));
 router.use('/', require('./Events'));
-
+router.use('/', require('./Chat'));
 
 
 router.get('/', function(req, res) {

@@ -23,7 +23,8 @@
     "morgan": "^1.6.1",
     "needle": "^0.11.0",
     "node-gcm": "^0.12.1",
-    "randomstring": "^1.1.3"
+    "randomstring": "^1.1.3",
+    "socket.io": "^1.3.7"
   },
   "devDependencies": {
     "mockgoose": "^5.0.4"
