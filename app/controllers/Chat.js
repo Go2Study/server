@@ -7,7 +7,7 @@ var path;
 path = '/chat';
 router.route(path)
     .get(function (req, res) {
-        res.sendfile('./index.html');
+        res.sendfile(__dirname + '/index.html');
     });
 
 module.exports = router;
