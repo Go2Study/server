@@ -20,23 +20,23 @@ module.exports = {
 		});
 	},
 
-	create: function(name, startTime, endTime, location, description, pcnlist, callback) {
+	create: function(name, startTime, endTime, location, description, pcnlist, group, callback) {
 		//Create event model
 		var event = new EventModel();
 		event.title = name;
-		//event.id = randomstring() TODO add id
+		event.id = Math.floor(Math.random(1,100)*100);
 		event.startTime = startTime;
 		event.endTime = endTime;
 		event.location = location;
 		event.description = description;
+		event.group = group;
 
 		var pcnArray = pcnlist.split(",");
+
 		//Add the list of PCN numbers to the event list, setting the status as invited (default)
 		pcnArray.forEach(function (e){
 			event.pcnlist.push({pcn: e, status: "invited"});
 		});
-
-		console.log(pcnlist);
 
 		EventModel.create(event,function(err, res){
 			if (err)

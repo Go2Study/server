@@ -4,6 +4,8 @@ var express = require('express')
 
 var path;
 var Events = require('./EventsService');
+var EventsSchedule = require('./EventsScheduleController');
+
 
 path = '/events'.replace('{',':').replace('}','');
 router.route(path)
@@ -26,8 +28,9 @@ router.route(path)
         var location = req.param('location');
         var description = req.param('description');
         var pcnlist = req.param('pcnlist');
+        var group = req.param('group');
 
-        Events.create(name, startTime, endTime, location,  description, pcnlist, function(err, result){
+        Events.create(name, startTime, endTime, location,  description, pcnlist, group, function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);
@@ -67,6 +70,21 @@ router.route(path)
         Events.delete(id, function(err, result){
             if (err)
                 res.json({error: err});
+            res.json(result);
+        });
+    });
+
+path = '/events/schedule'.replace('{',':').replace('}','');
+router.route(path)
+    .get(function (req, res) {
+        console.log('im here');
+        var pcnlist = req.param('pcnlist');
+        var duration = req.param('duration');
+        console.log('im here');
+        EventsSchedule.index(pcnlist, duration, function(err, result){
+            if (err)
+                res.json({error: err});
+
             res.json(result);
         });
     });
