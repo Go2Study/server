@@ -6,8 +6,7 @@ var GroupSchema   = new Schema({
     name: String,
     id: {type: String, index: {unique: true}, autoIndex: true},
     pcnlist: [String],
-    description: String,
-    events: [String]
+    description: String
 });
 
 
