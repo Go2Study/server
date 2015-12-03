@@ -14,7 +14,8 @@ var EventSchema   = new Schema({
     pcnlist: [{
                  pcn: {type: String, default: ""},
                  status: {type: String, default: "invited"},
-             }]
+             }],
+    group: String
 });
 
 
