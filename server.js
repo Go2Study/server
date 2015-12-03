@@ -30,6 +30,7 @@ var port = process.env.PORT || 8080;        // set our port
 // =============================================================================
 app.use(morgan('dev'));
 app.use('/api', require('./app/controllers'));
+app.set('view engine', 'jade');
 
 // development error handler
 // will print stacktrace
