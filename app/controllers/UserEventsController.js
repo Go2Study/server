@@ -1,4 +1,4 @@
-EventsModel = require('../models/Event');
+var EventModel = require('../models/Event');
 
 
 module.exports = {
@@ -8,13 +8,12 @@ module.exports = {
 				{'title': { "$regex": query, "$options": "i"}},
 				{'description': { "$regex": query, "$options": "i"}},
 				{'startTime': { "$regex": query, "$options": "i"}},
-				{'startTime': { "$regex": query, "$options": "i"}},
 				{'endTime': { "$regex": query, "$options": "i"}},
 				{'location': { "$regex": query, "$options": "i"}},
 				{'pcnlist': { "$regex": query, "$options": "i"}}
 		];
 
-		EventModel.find({'pcnlist.pcn': pcn, $or: queryOptions}, '-_id id title description startTime endTime location pcnlist', function (err, events) {
+		EventModel.find({pcnlist: {$elemMatch: {pcn: pcn}}, $or: queryOptions}, '-_id id title description startTime endTime location pcnlist', function (err, events) {
 			if (err)
 				callback(err, null);
 			callback(null, events);

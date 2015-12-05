@@ -108,24 +108,32 @@ getIndividualFreeTimes = function(pcnlist, duration, cb) {
                 return;
             }
 
+
             //Get the start and end time of all items in the schedule of every member for a given week
             for (var i = 0, l = users.length; i < l; ++i) {
-                var userTimes = [];
-                var schedule = users[i].schedule;
 
-                // The time between the beginning of the users agenda till the first schedule item
-                userTimes.push({startTime: users[i].minStartTime, endTime: schedule[schedule.length-1].startTime});
+                EventModel.find({pcnlist: {$elemMatch: {pcn: user[i].pcn}}}, function (err, events) {
+                   if (err)
+                        cb(err, null);
 
-                var length = users[i].schedule.length-1;
-                for (var j = length; j > 0; --j) {
-                    userTimes.push({startTime: users[i].schedule[j].endTime, endTime: users[i].schedule[j-1].startTime});
-                }
+                    var userTimes = [];
+                    var schedule = events;
 
-                userTimes.push({startTime: schedule[0].endTime, endTime: users[i].maxEndTime});
-                individualFreeTimes.push(userTimes);
+                    // The time between the beginning of the users agenda till the first schedule item
+                    userTimes.push({startTime: users[i].minStartTime, endTime: schedule[schedule.length-1].startTime});
+
+                    var length = schedule.length-1;
+                    for (var j = length; j > 0; --j) {
+                        userTimes.push({startTime: users[i].schedule[j].endTime, endTime: schedule[j-1].startTime});
+                    }
+
+                    userTimes.push({startTime: schedule[0].endTime, endTime: users[i].maxEndTime});
+                    individualFreeTimes.push(userTimes);
+
+                    var commonFreeTimes = getCommonFreeTimes(duration, individualFreeTimes);
+                    cb(null, commonFreeTimes);
+                });
             }
-            var commonFreeTimes = getCommonFreeTimes(duration, individualFreeTimes);
-            cb(null, commonFreeTimes);
         });
 };
 
