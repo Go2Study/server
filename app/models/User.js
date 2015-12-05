@@ -1,5 +1,6 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
+var EventSchema = require('./Event');
 
 var UserSchema   = new Schema({
     firstName: String,
@@ -8,13 +9,12 @@ var UserSchema   = new Schema({
     email: String,
     pcn: {type: String, index: { unique: true } },
     gps_location: {x: Number, y: Number},
-    photo: Buffer,
+    photo: { data: Buffer, contentType: String },
     className: String,
     ipaddress: String,
     password: String,
     privateLocation: Boolean,
     privateAgenda: Boolean,
-    //schedule: EventSchema,
     schedule : [{
         scheduleId: {type: String, default: ""},
         startTime : Date,
