@@ -41,8 +41,10 @@ router.route(path)
     .put(function (req, res) {
         var pcn = req.params.pcn;
         var photo = req.param('photo');
+        var displayName = req.param('displayName');
+        var email = req.param('email');
 
-        Users.update(pcn, photo, function(err, result){
+        Users.update(pcn, photo, displayName, email function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);
