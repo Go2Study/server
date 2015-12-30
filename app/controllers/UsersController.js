@@ -66,9 +66,9 @@ module.exports = {
         });
 	},
 
-	update: function(pcn, photo, displayName, email, callback) {
+	update: function(pcn, setObj, callback) {
 
-        UserModel.findOneAndUpdate({ pcn: pcn }, { photo: photo, displayName: displayName, email: email }, function(err, res){
+        UserModel.findOneAndUpdate({ pcn: pcn }, setObj, function(err, res){
             if (err)
                 callback(err, null);
             callback(null, res);

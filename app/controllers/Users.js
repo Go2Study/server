@@ -39,12 +39,16 @@ router.route(path)
 path = '/users/{pcn}'.replace('{',':').replace('}','');
 router.route(path)
     .put(function (req, res) {
-        var pcn = req.params.pcn;
-        var photo = req.param('photo');
-        var displayName = req.param('displayName');
-        var email = req.param('email');
+        var objForUpdate = {};
+        var pcn;
+        if (typeof req.params.pcn !== 'undefined') pcn = req.params.pcn;
+        if (typeof req.params.displayName !== 'undefined') objForUpdate.displayName = req.params.displayName;
+        if (typeof req.params.email !== 'undefined') objForUpdate.email = req.params.email;
+        if (typeof req.params.photo !== 'undefined') objForUpdate.photo = req.params.photo;
 
-        Users.update(pcn, photo, displayName, email, function(err, result){
+        var setObj = { $set: objForUpdate };
+
+        Users.update(pcn, setObj, function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);
