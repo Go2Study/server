@@ -117,7 +117,7 @@ io.on('connection', function (socket) {
     });
 });
 
-http.listen(8080, "127.0.0.1");
+http.listen(8080);
 
 // START THE SERVER
 // =============================================================================
