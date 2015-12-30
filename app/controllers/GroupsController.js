@@ -23,7 +23,7 @@ module.exports = {
 	create: function(name, pcnlist, description, callback) {
 		var group = new GroupModel();
         group.name = name;
-        group.pcnlist = pcnlist.split(',');
+        group.pcnlist = pcnlist.trim().split(',');
         group.description = description;
 
         //TODO use the randomstring library

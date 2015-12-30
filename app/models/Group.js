@@ -3,7 +3,7 @@ var Schema       = mongoose.Schema;
 
 
 var GroupSchema   = new Schema({
-    name: String,
+    name: {type: String, required: true },
     id: {type: String, index: {unique: true}, autoIndex: true},
     pcnlist: [String],
     description: String
