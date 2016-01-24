@@ -66,9 +66,9 @@ module.exports = {
         });
 	},
 
-	update: function(pcn, setObj, callback) {
+	update: function(pcn, updateParams, callback) {
 
-        UserModel.findOneAndUpdate({ pcn: pcn }, setObj, function(err, res){
+        UserModel.findOneAndUpdate({ pcn: pcn }, updateParams, function(err, res){
             if (err)
                 callback(err, null);
             callback(null, res);

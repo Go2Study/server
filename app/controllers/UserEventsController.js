@@ -1,4 +1,4 @@
-EventsModel = require('../models/Event');
+var EventModel = require('../models/Event');
 
 
 module.exports = {
@@ -21,18 +21,11 @@ module.exports = {
 		});
 	}, 
 
-	update: function(pcn, id, name, callback) {
-		var conditions = { 'pcnlist.pcn' : pcn, 'id': id}
-			, update = { name: name}
-			, options = { multi: true };
-
-		EventModel.update(conditions, update, options, function(err, numAffected){
+	update: function(eventid, pcn, updateParams, callback) {
+		EventModel.findOneAndUpdate({id: eventid, pcnlist: pcn}, updateParams, function(err, res){
 			if (err)
 				callback(err, null);
-
-			if (numAffected>0) {
-				callback(null, {success: 'Updated details for '+numAffected+' rows'});
-			}
+            callback(null, res);
 		});
 	}, 
 

@@ -1,4 +1,4 @@
-GroupModel = require('../models/Group');
+var GroupModel = require('../models/Group');
 
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
 	create: function(name, pcnlist, description, callback) {
 		var group = new GroupModel();
         group.name = name;
-        group.pcnlist = pcnlist.trim().split(',');
+        group.pcnlist = pcnlist.replace(/ /g,'').split(',');
         group.description = description;
 
         //TODO use the randomstring library
@@ -36,8 +36,10 @@ module.exports = {
         });
 	}, 
 
-	update: function(groupid, name, description, callback) {
-        GroupModel.findOneAndUpdate({id: groupid}, {name: name, description: description}, function(err, res){
+	update: function(groupid, updateParams, callback) {
+        if (updateParams.pcnlist)
+            updateParams.pcnlist = updateParams.pcnlist.replace(/ /g,'').split(',');
+        GroupModel.findOneAndUpdate({id: groupid}, updateParams, function(err, res){
             if (err)
                 callback(err, null);
             callback(null, res);

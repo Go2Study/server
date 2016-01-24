@@ -50,14 +50,7 @@ router.route(path)
     })
 
     .put(function (req, res) {
-        var id = req.param('id');
-        var name = req.param('name');
-        var startTime = req.param('startTime');
-        var endTime = req.param('endTime');
-        var description = req.param('description');
-        var location = req.param('location');
-
-        Events.update(id, name, startTime, endTime, description, location, function(err, result){
+        Events.update(req.params.id, req.body, function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);

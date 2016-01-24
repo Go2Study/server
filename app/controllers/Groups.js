@@ -45,11 +45,7 @@ router.route(path)
     })
 
     .put(function (req, res) {
-        var groupid = req.param('groupid');
-        var name = req.param('name');
-        var description = req.param('description');
-
-        Groups.update(groupid, name, description, function(err, result){
+        Groups.update(req.params.groupid, req.body, function(err, result){
             if (err)
                 res.json({error: err});
             res.json(result);

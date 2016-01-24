@@ -1,5 +1,5 @@
-EventModel = require('../models/Event');
-UserModel = require('../models/User');
+var EventModel = require('../models/Event');
+var UserModel = require('../models/User');
 
 module.exports = {
 
@@ -45,18 +45,11 @@ module.exports = {
 		//TODO Send push notifications with invitations to all the clients in the pcnlist
 	}, 
 
-	update: function(id, name, startTime, endTime, description, location, callback) {
-		var conditions = { id: id }
-			, update = { name: name, startTime: startTime, endTime: endTime, description: description, location: location}
-			, options = { multi: true };
-
-		EventModel.update(conditions, update, options, function(err, numAffected){
+	update: function(eventid, updateParams, callback) {
+		EventModel.findOneAndUpdate({id: eventid}, updateParams, function(err, res){
 			if (err)
-				callback(err, null);
-
-			if (numAffected>0) {
-				callback(null, '{success: '+numAffected+' users changed');
-			}
+                callback(err, null);
+            callback(null, res);
 		});
 	}, 
 
