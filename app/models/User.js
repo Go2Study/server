@@ -9,7 +9,7 @@ var UserSchema   = new Schema({
     email: String,
     pcn: {type: String, index: { unique: true } },
     gps_location: {x: Number, y: Number},
-    photo: { data: Buffer, contentType: String },
+    photo: { type: String},
     className: String,
     ipaddress: String,
     password: String,
